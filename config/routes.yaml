@@ -5,3 +5,19 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+# config/routes.yaml
+about:
+  path: /about
+  controller: App\Controller\CoreController::about
+
+# config/routes.yaml
+create_event:
+  path: /events/create/{id}
+  controller: App\Controller\EventController::createEvent
+
+
+# config/routes.yaml
+connexion:
+  path: /connexion
+  controller: App\Controller\CoreController::connexion

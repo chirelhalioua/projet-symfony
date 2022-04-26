@@ -1,0 +1,37 @@
+{# templates/core/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil |
+	{{ parent() }}
+{% endblock %}
+
+{% block content %}
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+				<h2 class="text-center">Événements à venir</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="d-flex flex-row flex-wrap">
+				{% for event in events %}
+					<div class="card m-2" style="width: 16rem;">
+						<img class="card-img-top" src="{{ event.picture }}" alt="{{ event.title }}">
+						<div class="card-body">
+							<h5 class="card-title">{{ event.title }}</h5>
+							<p class="card-text text-muted">
+								Le
+								{{ event.eventDate|format_datetime('medium', 'short', locale='fr') }}
+								<br>
+								{{ event.address }}
+							</p>
+							<a href="{{ path('show_event', {'id': event.id}) }}" class="btn btn-primary">Réserver</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
