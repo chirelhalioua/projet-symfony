@@ -9,7 +9,7 @@
     <div class="col-md-4">
         <h1 class="text-center" style="margin-top:5%;">Inscription</h1>
 
-        <form action="inscription}" method="post" class="mt-4">
+        <form action="inscription" method="post" class="mt-4">
             <div class="mb-3">
                 <label for="first_name" class="form-label">Prénom</label>
                 <input type="text" id="first_name" name="first_name" class="form-control" required>
@@ -30,8 +30,13 @@
         </form>
 
         <p class="text-center mt-3">
-            Déjà un compte ? <a href="{{ path('connexion') }}">Connectez-vous</a>
+            Déjà un compte ? <a href="/connexion">Connectez-vous</a>
         </p>
+
+        {% for error in form.vars.errors %}
+        <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+
     </div>
 </div>
 {% endblock %}

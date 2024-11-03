@@ -7,8 +7,8 @@ about:
   controller: App\Controller\SecurityController::about
 
 inscription:
-  path: /registration
-  controller: App\Controller\RegistrationController::registration
+  path: /inscription
+  controller: App\Controller\RegistrationController::inscription
 
 connexion:
   path: /connexion
