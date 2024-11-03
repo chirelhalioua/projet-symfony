@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TagRepository::class)
+ * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
-class Tag
+class Category
 {
     /**
      * @ORM\Id
@@ -22,10 +21,10 @@ class Tag
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $label;
+    private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="categories")
      */
     private $events;
 
@@ -39,21 +38,18 @@ class Tag
         return $this->id;
     }
 
-    public function getLabel(): ?string
+    public function getName(): ?string
     {
-        return $this->label;
+        return $this->name;
     }
 
-    public function setLabel(string $label): self
+    public function setName(string $name): self
     {
-        $this->label = $label;
+        $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -63,7 +59,7 @@ class Tag
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
-            $event->addTag($this);
+            $event->addCategory($this); // Ajout réciproque
         }
 
         return $this;
@@ -71,8 +67,9 @@ class Tag
 
     public function removeEvent(Event $event): self
     {
-        if ($this->events->removeElement($event)) {
-            $event->removeTag($this);
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+            $event->removeCategory($this); // Suppression réciproque
         }
 
         return $this;

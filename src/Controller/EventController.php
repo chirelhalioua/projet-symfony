@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\Tag;
+use App\Entity\Category;
 use App\Repository\EventRepository;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Stmt\Catch_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,13 +58,13 @@ class EventController extends AbstractController
         $event2->setTitle('Événement à venir, pas encore publique');
 
         // on ajoute quelques tags à l'événement
-        $webTag = new Tag();
-        $webTag->setLabel('web');
-        $event->addTag($webTag);
+        $webTag = new Category();
+        $webTag->setName('web');
+        $event->addCategory($webTag);
 
-        $codeTag = new Tag();
-        $codeTag->setLabel('code');
-        $event->addTag($codeTag);
+        $codeTag = new Category();
+        $codeTag->setName('code');
+        $event->addCategory($codeTag);
 
         /* on récupère le gestionnaire d'entités qui va nous permettre
             d'enregistrer l'événement */
@@ -116,17 +117,35 @@ class EventController extends AbstractController
         return new Response("L'événement {$event->getId()} à bien été supprimer.");
     }
 
-    /**
-     * @Route("/events/{category}", name="list_events")
-     */
-    public function list($category = null): Response
-    {
-        $htmlMessage = "<h1>Liste des événements";
-        if ($category) {
-            $htmlMessage .= " ave la catégorie: ${category}";
-        }
-        $htmlMessage .= "</h1>";
 
-        return new Response($htmlMessage);
+        /**
+         * @Route("/events", name="list_events")
+         */
+        public function list(EventRepository $eventRepository): Response
+        {
+            // Récupération de tous les événements
+            $events = $eventRepository->findAll();
+    
+            return $this->render('event/list.html.twig', [
+                'events' => $events,
+            ]);
+        }
+    
+        /**
+         * @Route("/events/category/{category}", name="list_events_by_category")
+         */
+        public function listByCategory($category = null): Response
+        {
+            // Logique pour lister les événements par catégorie
+            // Vous pouvez implémenter la logique ici si nécessaire
+    
+            $htmlMessage = "<h1>Liste des événements";
+            if ($category) {
+                $htmlMessage .= " avec la catégorie: $category";
+            }
+            $htmlMessage .= "</h1>";
+    
+            return new Response($htmlMessage);
+        }
     }
-}
+    

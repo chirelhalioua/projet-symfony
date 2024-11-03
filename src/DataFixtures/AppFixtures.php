@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Event;
-use App\Entity\Tag;
+use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -11,17 +11,17 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $webTag = new Tag();
-        $webTag->setLabel('web');
+        $webTag = new Category();
+        $webTag->setName('web');
 
-        $codeTag = new Tag();
-        $codeTag->setLabel('code');
+        $codeTag = new Category();
+        $codeTag->setName('code');
 
-        $apiTag = new Tag();
-        $apiTag->setLabel('api');
+        $apiTag = new Category();
+        $apiTag->setName('api');
 
-        $designTag = new Tag();
-        $designTag->setLabel('api');
+        $designTag = new Category();
+        $designTag->setName('api');
 
         $event1 = new Event();
         $event1->setPicture('https://images.pexels.com/photos/251225/pexels-photo-251225.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
@@ -35,8 +35,8 @@ class AppFixtures extends Fixture
         $event1->setEventDate((new \DateTime('+14 days'))->setTime(10, 30));
         $event1->setIsPublished(true);
         $event1->setPublishedAt(new \DateTimeImmutable());
-        $event1->addTag($webTag);
-        $event1->addTag($codeTag);
+        $event1->addCategory($webTag);
+        $event1->addCategory($codeTag);
         $manager->persist($event1);
 
         $event2 = new Event();
@@ -51,9 +51,9 @@ class AppFixtures extends Fixture
         $event2->setEventDate((new \DateTime('+10 days'))->setTime(10, 0));
         $event2->setIsPublished(true);
         $event2->setPublishedAt(new \DateTimeImmutable());
-        $event2->addTag($webTag);
-        $event2->addTag($codeTag);
-        $event2->addTag($apiTag);
+        $event2->addCategory($webTag);
+        $event2->addCategory($codeTag);
+        $event2->addCategory($apiTag);
         $manager->persist($event2);
 
         $event3 = new Event();
@@ -68,7 +68,7 @@ class AppFixtures extends Fixture
         $event3->setEventDate((new \DateTime('+14 days'))->setTime(16, 0));
         $event3->setIsPublished(true);
         $event3->setPublishedAt(new \DateTimeImmutable());
-        $event3->addTag($designTag);
+        $event3->addCategory($designTag);
         $manager->persist($event3);
 
         $event4 = new Event();
@@ -83,8 +83,8 @@ class AppFixtures extends Fixture
         $event4->setEventDate((new \DateTime('+5 days'))->setTime(10, 0));
         $event4->setIsPublished(true);
         $event4->setPublishedAt(new \DateTimeImmutable());
-        $event4->addTag($apiTag);
-        $event4->addTag($webTag);
+        $event4->addCategory($apiTag);
+        $event4->addCategory($webTag);
         $manager->persist($event4);
 
         $event5 = new Event();

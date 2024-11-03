@@ -1,0 +1,28 @@
+{# templates/security/login.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion | {{ parent() }} {% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-4">
+        <h1 class="text-center" style="margin-top:5%;">Connexion</h1>
+        <p class="text-center">Pour réserver, vous devez vous connecter :</p>       
+        <form action="{{ path('connexion') }}" method="post" class="mt-4">
+            <div class="mb-3">
+                <label for="username" class="form-label">Nom d'utilisateur</label>
+                <input type="text" id="username" name="_username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" id="password" name="_password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+        </form>
+        <p class="text-center mt-3">
+            Pas encore de compte ? <a href="/registration">Inscrivez-vous</a>
+        </p>
+            </div>
+</div>
+{% endblock %}

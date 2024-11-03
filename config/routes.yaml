@@ -1,23 +1,19 @@
 controllers:
-    resource: ../src/Controller/
-    type: annotation
+  resource: ../src/Controller/
+  type: annotation
 
-kernel:
-    resource: ../src/Kernel.php
-    type: annotation
-
-# config/routes.yaml
 about:
   path: /about
-  controller: App\Controller\CoreController::about
+  controller: App\Controller\SecurityController::about
 
-# config/routes.yaml
-create_event:
-  path: /events/create/{id}
-  controller: App\Controller\EventController::createEvent
+inscription:
+  path: /registration
+  controller: App\Controller\RegistrationController::registration
 
-
-# config/routes.yaml
 connexion:
   path: /connexion
-  controller: App\Controller\CoreController::connexion
+  controller: App\Controller\SecurityController::connexion
+
+list:
+  path: /events
+  controller: App\Controller\EventController::list

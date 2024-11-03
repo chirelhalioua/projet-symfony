@@ -3,12 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
-use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
@@ -68,19 +66,15 @@ class Event
     private $publishedAt;
 
     /**
-     * @ORM\ManyToMany(
-     *  targetEntity=Tag::class,
-     *  inversedBy="events",
-     *  cascade={"persist"}
-     * )
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="events", cascade={"persist"})
      */
-    private $tags;
+    private $categories;
 
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
-        $this->isPublished = false;
+        $this->categories = new ArrayCollection(); // Initialisation de la collection
+        $this->createdAt = new DateTimeImmutable(); // Date de création
+        $this->isPublished = false; // Par défaut non publié
     }
 
     public function getId(): ?int
@@ -165,13 +159,6 @@ class Event
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -196,26 +183,25 @@ class Event
         return $this;
     }
 
-    /**
-     * @return Collection|Tag[]
-     */
-    public function getTags(): Collection
+    public function getCategories(): Collection
     {
-        return $this->tags;
+        return $this->categories;
     }
 
-    public function addTag(Tag $tag): self
+    public function addCategory(Category $category): self
     {
-        if (!$this->tags->contains($tag)) {
-            $this->tags[] = $tag;
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
         }
 
         return $this;
     }
 
-    public function removeTag(Tag $tag): self
+    public function removeCategory(Category $category): self
     {
-        $this->tags->removeElement($tag);
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
 
         return $this;
     }

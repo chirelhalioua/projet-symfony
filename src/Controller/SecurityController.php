@@ -1,5 +1,4 @@
 <?php
-// src/Controller/CoreController.php
 
 namespace App\Controller;
 
@@ -8,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CoreController extends AbstractController
+class SecurityController extends AbstractController
 {
     /**
      * @Route("/", name="homepage")
@@ -22,14 +21,14 @@ class CoreController extends AbstractController
             0
         );
 
-        return $this->render('core/index.html.twig', ['events' => $events]);
+        return $this->render('security/index.html.twig', ['events' => $events]);
     }
     /**
      * @Route("/about", name="about")
      */
     public function about()
     {
-        return $this->render('core/about.html.twig');
+        return $this->render('security/about.html.twig');
     }
 
     /**
@@ -37,6 +36,14 @@ class CoreController extends AbstractController
      */
     public function connexion()
     {
-        return $this->render('core/connexion.html.twig');
+        return $this->render('security/connexion.html.twig');
+    }
+
+    /**
+     * @Route("/inscription", name="inscription")
+     */
+    public function inscription()
+    {
+        return $this->render('security/inscription.html.twig');
     }
 }

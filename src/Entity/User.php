@@ -18,19 +18,19 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255) 
      */
-    private $Nom;
+    private $nom;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255) 
      */
-    private $Prénom;
+    private $prenom;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255) 
      */
-    private $Mail;
+    private $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -44,36 +44,36 @@ class User
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): self
+    public function setNom(string $nom): self
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getPrénom(): ?string
+    public function getPrenom(): ?string
     {
-        return $this->Prénom;
+        return $this->prenom;
     }
 
-    public function setPrénom(string $Prénom): self
+    public function setPrenom(string $prenom): self
     {
-        $this->Prénom = $Prénom;
+        $this->prenom = $prenom;
 
         return $this;
     }
 
     public function getMail(): ?string
     {
-        return $this->Mail;
+        return $this->mail;
     }
 
-    public function setMail(string $Mail): self
+    public function setMail(string $mail): self
     {
-        $this->Mail = $Mail;
+        $this->mail = $mail;
 
         return $this;
     }

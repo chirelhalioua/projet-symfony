@@ -3,32 +3,40 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ event.title }}
-	|
-	{{ parent() }}
+    {{ event.title }}
+    |
+    {{ parent() }}
 {% endblock %}
 
 {% block content %}
-	<div class="hero p-4">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12 col-lg-6">
-					<img src="{{ event.picture }}" alt="" class="img-fluid">
-				</div>
-				<div class="col-sm-12 col-lg-6 mt-3">
-					<h2>{{ event.title }}</h2>
-					<p class="card-text text-muted">
-						Le
-						{{ event.eventDate|format_datetime('medium', 'short', locale='fr') }}
-						<br>
-						{{ event.address }}
-					</p>
-					<p class="lead">
-						{{ event.description }}
-					</p>
-					<a href="#" class="btn btn-primary">Réserver</a>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="hero p-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-lg-6">
+                    <img src="{{ asset(event.picture) }}" alt="{{ event.title }}" class="img-fluid" style="max-width: 500px;">
+                </div>
+                <div class="col-sm-12 col-lg-6 mt-3">
+                    <h2>{{ event.title }}</h2>
+                    <p class="card-text text-muted">
+                        Le {{ event.eventDate|format_datetime('medium', 'short', locale='fr') }}
+                        <br>
+                        {{ event.address }}
+                    </p>
+                    <p class="lead">{{ event.description }}</p>
+                    
+                    <p>Catégorie : 
+                    {% if event.categories|length > 0 %}
+                        {% for category in event.categories %}
+                            {{ category.name }} 
+                        {% endfor %}
+                    {% else %}
+                        Aucune catégorie associée.
+                    {% endif %}
+                    </p>
+
+                    <a href="/connexion" class="btn btn-primary btn-reserve">Réserver</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

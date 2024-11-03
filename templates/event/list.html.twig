@@ -1,0 +1,28 @@
+{# templates/event/list.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des événements{% endblock %}
+
+{% block content %}
+    <h1>Liste des événements</h1>
+
+    {% if events is empty %}
+        <p>Aucun événement disponible.</p>
+    {% else %}
+        <ul>
+            {% for event in events %}
+                <li>
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.description }}</p>
+                    <p>Catégories :
+                        {% for category in event.categories %}
+                            {{ category.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p>Date : {{ event.eventDate|format_datetime('medium', 'short', locale='fr') }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
