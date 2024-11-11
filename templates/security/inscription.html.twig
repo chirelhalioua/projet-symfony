@@ -9,33 +9,63 @@
     <div class="col-md-4">
         <h1 class="text-center" style="margin-top:5%;">Inscription</h1>
 
-        <form action="inscription" method="post" class="mt-4">
-            <div class="mb-3">
-                <label for="first_name" class="form-label">Prénom</label>
-                <input type="text" id="first_name" name="first_name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Nom</label>
-                <input type="text" id="last_name" name="last_name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
-        </form>
+        {% if app.session.flashBag.has('error') %}
+        <div class="alert alert-danger">
+        {% for message in app.session.flashBag.get('error') %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if app.session.flashBag.has('success') %}
+    <div class="alert alert-success">
+        {% for message in app.session.flashBag.get('success') %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+        {# Formulaire de Symfony - géré automatiquement #}
+        {{ form_start(form, {'attr': {'class': 'mt-4'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.username, 'Identifiant', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.username) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.prenom) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.mail, 'mail', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.mail) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.password) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+
+        {{ form_end(form) }}
 
         <p class="text-center mt-3">
-            Déjà un compte ? <a href="/connexion">Connectez-vous</a>
+            Déjà un compte ? <a href="{{ path('connexion') }}">Connectez-vous</a>
         </p>
-
-        {% for error in form.vars.errors %}
-        <div class="alert alert-danger">{{ error.message }}</div>
-        {% endfor %}
 
     </div>
 </div>

@@ -18,8 +18,7 @@
                 <div class="col-sm-12 col-lg-6 mt-3">
                     <h2>{{ event.title }}</h2>
                     <p class="card-text text-muted">
-                        Le {{ event.eventDate|format_datetime('medium', 'short', locale='fr') }}
-                        <br>
+                    <p>Date de l'événement : {{ event.getEventDate()|date('d/m/Y H:i') }}</p>  
                         {{ event.address }}
                     </p>
                     <p class="lead">{{ event.description }}</p>
@@ -34,7 +33,13 @@
                     {% endif %}
                     </p>
 
-                    <a href="/connexion" class="btn btn-primary btn-reserve">Réserver</a>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {# Utilisateur connecté - redirige vers son espace personnel avec la réservation #}
+                        <a href="{{ path('mon_espace', {'reservedEventId': event.id}) }}" class="btn btn-success">Voir ma réservation</a>
+                    {% else %}
+                        {# Utilisateur non connecté - redirige vers la connexion #}
+                        <a href="{{ path('connexion') }}" class="btn btn-primary btn-reserve">Réserver</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

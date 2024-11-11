@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
-use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=EventRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
 class Event
 {
@@ -36,9 +34,9 @@ class Event
     private $address;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="event_date", type="datetime", nullable=true)
      */
-    private $eventDate;
+    private $eventDate; 
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -48,10 +46,10 @@ class Event
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isPublished;
+    private $isPublished = false;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -61,20 +59,25 @@ class Event
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="events", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="reservations")
+     */
+    private $users;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="events")
+     * @ORM\JoinTable(name="event_category")
      */
     private $categories;
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection(); // Initialisation de la collection
-        $this->createdAt = new DateTimeImmutable(); // Date de création
-        $this->isPublished = false; // Par défaut non publié
+        $this->users = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,7 +93,6 @@ class Event
     public function setPicture(?string $picture): self
     {
         $this->picture = $picture;
-
         return $this;
     }
 
@@ -102,7 +104,6 @@ class Event
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -114,19 +115,17 @@ class Event
     public function setAddress(?string $address): self
     {
         $this->address = $address;
-
         return $this;
     }
 
-    public function getEventDate(): ?\DateTimeInterface
+    public function getEventDate(): ?\DateTimeInterface 
     {
-        return $this->eventDate;
+        return $this->eventDate; 
     }
 
-    public function setEventDate(?\DateTimeInterface $eventDate): self
+    public function setEventDate(?\DateTimeInterface $eventDate): self 
     {
-        $this->eventDate = $eventDate;
-
+        $this->eventDate = $eventDate; 
         return $this;
     }
 
@@ -138,11 +137,10 @@ class Event
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
-    public function getIsPublished(): ?bool
+    public function getIsPublished(): bool
     {
         return $this->isPublished;
     }
@@ -150,13 +148,18 @@ class Event
     public function setIsPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
-
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -167,22 +170,45 @@ class Event
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
         return $this;
     }
 
-    public function getPublishedAt(): ?\DateTimeImmutable
+    public function getPublishedAt(): ?\DateTimeInterface
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(?\DateTimeImmutable $publishedAt): self
+    public function setPublishedAt(?\DateTimeInterface $publishedAt): self
     {
         $this->publishedAt = $publishedAt;
-
         return $this;
     }
 
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
     public function getCategories(): Collection
     {
         return $this->categories;
@@ -192,8 +218,8 @@ class Event
     {
         if (!$this->categories->contains($category)) {
             $this->categories[] = $category;
+            $category->addEvent($this);
         }
-
         return $this;
     }
 
@@ -201,8 +227,8 @@ class Event
     {
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
+            $category->removeEvent($this);
         }
-
         return $this;
     }
 }

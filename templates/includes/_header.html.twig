@@ -12,9 +12,24 @@
                 <li class="nav-item">
                     <a class="nav-link {{ app.request.get('_route') == 'about' ? 'active' : '' }}" href="{{ path('about') }}">À propos</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ app.request.get('_route') == 'connexion' ? 'active' : '' }}" href="{{ path('connexion') }}">Connexion</a>
-                </li>
+
+                {% if app.user %}
+                    <!-- Lien vers l'espace personnel si l'utilisateur est connecté -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'mon_espace' ? 'active' : '' }}" href="{{ path('mon_espace') }}">Mon Espace</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Formulaire pour le bouton de déconnexion -->
+                        <form action="{{ path('logout') }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-link nav-link" style="display:inline; cursor:pointer; color:white;">Déconnexion</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <!-- Lien de connexion si l'utilisateur n'est pas connecté -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'connexion' ? 'active' : '' }}" href="{{ path('connexion') }}">Connexion</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

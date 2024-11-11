@@ -16,9 +16,20 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+            - '../src/DependencyInjection/' # Excluding the DependencyInjection folder because it usually contains configuration code.
+            - '../src/Entity/'              # Excluding the Entity folder because it's typically used for data mapping.
+            - '../src/Kernel.php'           # Excluding Kernel.php, since it's the entry point and not a service.
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Add any additional service definitions below if explicit configuration is needed.
+    # Please note that last definitions always *replace* previous ones.
+    
+    # Example of an explicit service configuration:
+    # App\Service\MyService:
+    #     arguments:
+    #         $myParameter: '%my_parameter%'
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:

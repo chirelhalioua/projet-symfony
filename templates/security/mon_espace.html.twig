@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Espace | {{ parent() }} {% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if user %}
+        <h1>Bienvenue dans votre espace personnel, {{ user.username }} !</h1>
+        <p>Vous êtes maintenant connecté. Profitez de toutes les fonctionnalités !</p>
+        <p>Email : {{ user.mail }}</p>
+
+        <div>
+            <h2>Mes réservations</h2>
+            <ul>
+                {% for reservation in user.reservations %}
+                    <li>
+                        <strong>{{ reservation.title }}</strong> - {{ reservation.eventDate|date('d/m/Y H:i') }}
+                        {% if reservedEvent and reservation.id == reservedEvent.id %}
+                            <span class="badge badge-success">Nouvelle réservation</span>
+                        {% endif %}
+                        <form action="{{ path('annuler_reservation', {'id': reservation.id}) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-warning btn-sm">Annuler</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li>Aucune réservation.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <form action="{{ path('logout') }}" method="post" class="mt-4">
+            <button type="submit" class="btn btn-danger">Déconnexion</button>
+        </form>
+    {% else %}
+        <p>Veuillez vous connecter pour accéder à cet espace.</p>
+    {% endif %}
+</div>
+{% endblock %}

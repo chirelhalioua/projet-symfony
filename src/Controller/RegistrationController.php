@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -22,26 +23,29 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/inscription", name="inscription")
      */
-    public function inscription(Request $request): Response
+    public function inscription(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $user = new User(); // Créez une nouvelle instance de l'utilisateur
+        $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Enregistrer l'utilisateur dans la base de données
+            // Hachage du mot de passe
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
+
+            // Persist and flush the user entity
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            // Vérifiez si l'utilisateur a été inséré
             $this->addFlash('success', 'Inscription réussie!');
-            return $this->redirectToRoute('some_route'); // Changez 'some_route' par la route où vous voulez rediriger
+            return $this->redirectToRoute('mon_espace'); 
         } else {
-            // Si le formulaire n'est pas valide
-            $this->addFlash('error', 'Erreur lors de l\'inscription.');
+            // Debugging : affiche les erreurs de validation
+            dump($form->getErrors(true, false)); // Supprimez ceci en production
         }
 
-        // Afficher le formulaire même si l'utilisateur n'est pas inscrit
+        // Si le formulaire n'est pas soumis ou n'est pas valide
         return $this->render('security/inscription.html.twig', [
             'form' => $form->createView(),
         ]);

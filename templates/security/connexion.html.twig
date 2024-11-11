@@ -1,5 +1,3 @@
-{# templates/security/login.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Connexion | {{ parent() }} {% endblock %}
@@ -8,11 +6,17 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="col-md-4">
         <h1 class="text-center" style="margin-top:5%;">Connexion</h1>
-        <p class="text-center">Pour réserver, vous devez vous connecter :</p>       
+        <p class="text-center">Pour réserver, vous devez vous connecter :</p>
+
+        {# Affichage des erreurs de connexion #}
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        
         <form action="{{ path('connexion') }}" method="post" class="mt-4">
             <div class="mb-3">
-                <label for="username" class="form-label">Nom d'utilisateur</label>
-                <input type="text" id="username" name="_username" class="form-control" required>
+                <label for="username" class="form-label">Email</label>
+                <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
@@ -23,6 +27,6 @@
         <p class="text-center mt-3">
             Pas encore de compte ? <a href="/inscription">Inscrivez-vous</a>
         </p>
-            </div>
+    </div>
 </div>
 {% endblock %}

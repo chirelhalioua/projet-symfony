@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
 class Category
 {
@@ -24,7 +24,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="categories")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="categories")
      */
     private $events;
 
@@ -46,10 +46,12 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
+    /**
+     * @return Collection|Event[]
+     */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -59,9 +61,8 @@ class Category
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
-            $event->addCategory($this); // Ajout réciproque
+            $event->addCategory($this);
         }
-
         return $this;
     }
 
@@ -69,9 +70,8 @@ class Category
     {
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
-            $event->removeCategory($this); // Suppression réciproque
+            $event->removeCategory($this);
         }
-
         return $this;
     }
 }

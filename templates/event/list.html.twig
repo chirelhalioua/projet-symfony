@@ -20,7 +20,7 @@
                             {{ category.name }}{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </p>
-                    <p>Date : {{ event.eventDate|format_datetime('medium', 'short', locale='fr') }}</p>
+                    <p>Date : {{ event.event_date|format_datetime('medium', 'short', locale='fr') }}</p>
                 </li>
             {% endfor %}
         </ul>
