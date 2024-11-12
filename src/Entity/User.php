@@ -57,15 +57,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="users")
      */
     private $reservations;
 
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
-        $this->roles = []; // Initialisation du tableau des rôles
     }
+
 
     public function getId(): ?int
     {
@@ -132,9 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
     public function getReservations(): Collection
     {
         return $this->reservations;
@@ -144,25 +141,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->reservations->contains($event)) {
             $this->reservations[] = $event;
-            $event->setUser($this);
         }
+
         return $this;
     }
+
 
     public function removeReservation(Event $event): self
     {
-        if ($this->reservations->contains($event)) {
-            $this->reservations->removeElement($event);
-            if ($event->getUser() === $this) {
-                $event->setUser(null);
-            }
-        }
+        $this->reservations->removeElement($event);
+
         return $this;
     }
-
+    
     public function getRoles(): array
     {
-        return array_unique(array_merge($this->roles, ['ROLE_USER']));
+        $roles = $this->roles;
+
+        // Garantit que chaque utilisateur a au moins le rôle ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self

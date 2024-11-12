@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,18 +11,16 @@ class UserSpaceController extends AbstractController
     /**
      * @Route("/mon-espace", name="mon_espace")
      */
-    public function index(): Response
+    public function index(Security $security): Response
     {
-        // Récupérer l'utilisateur actuellement connecté
-        $user = $this->getUser();
+        $user = $security->getUser();
 
-        // Vérifier si l'utilisateur est connecté
+        // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
         if (!$user) {
-            // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
             return $this->redirectToRoute('connexion');
         }
 
-        // Passer l'utilisateur au template
+        // Passez l'utilisateur au template
         return $this->render('security/mon_espace.html.twig', [
             'user' => $user,
         ]);

@@ -22,9 +22,7 @@ security:
             form_login:
                 login_path: connexion
                 check_path: connexion
-                # Route après une connexion réussie
                 default_target_path: mon_espace
-                # Si vous voulez récupérer une route d'erreur, définissez cette option
                 failure_path: connexion
 
             logout:

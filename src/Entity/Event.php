@@ -36,7 +36,7 @@ class Event
     /**
      * @ORM\Column(name="event_date", type="datetime", nullable=true)
      */
-    private $eventDate; 
+    private $eventDate;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -63,10 +63,13 @@ class Event
      */
     private $publishedAt;
 
+    // Dans l'entité Event
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="reservations")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="reservations")
+     * @ORM\JoinTable(name="user_event")  // Nom de la table de jointure
      */
     private $users;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="events")
@@ -118,14 +121,14 @@ class Event
         return $this;
     }
 
-    public function getEventDate(): ?\DateTimeInterface 
+    public function getEventDate(): ?\DateTimeInterface
     {
-        return $this->eventDate; 
+        return $this->eventDate;
     }
 
-    public function setEventDate(?\DateTimeInterface $eventDate): self 
+    public function setEventDate(?\DateTimeInterface $eventDate): self
     {
-        $this->eventDate = $eventDate; 
+        $this->eventDate = $eventDate;
         return $this;
     }
 
@@ -192,17 +195,28 @@ class Event
         return $this->users;
     }
 
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-        }
-        return $this;
-    }
-
+    /**
+     * Méthode pour supprimer un utilisateur de l'événement
+     */
     public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
+        return $this;
+    }
+
+    /**
+     * Méthode pour définir tous les utilisateurs associés à cet événement
+     */
+    public function setUsers(Collection $users): self
+    {
+        // Vider la collection d'utilisateurs actuelle
+        $this->users = new ArrayCollection();
+
+        // Ajouter chaque utilisateur de la collection passée
+        foreach ($users as $user) {
+            $this->addUser($user); // La méthode addUser permet d'ajouter chaque utilisateur
+        }
+
         return $this;
     }
 
@@ -216,13 +230,25 @@ class Event
 
     public function addCategory(Category $category): self
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addEvent($this);
+    if (!$this->categories->contains($category)) {
+        $this->categories[] = $category;
+    }
+
+    return $this;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
         }
+    
         return $this;
     }
 
+    /**
+     * Méthode pour supprimer une catégorie de l'événement
+     */
     public function removeCategory(Category $category): self
     {
         if ($this->categories->contains($category)) {
