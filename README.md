@@ -27,6 +27,7 @@ Prérequis :
 1) Cloner le dépôt :
    
 git clone https://github.com/chirelhalioua/projet-symfony.git
+
 cd nom-du-projet
 Installer les dépendances
 
