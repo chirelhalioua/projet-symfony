@@ -1,4 +1,5 @@
-Projet d'Inscription à des Événements
+Projet d'Inscription à des Événements : 
+
 Ce projet est une application web permettant d'afficher et de s'inscrire à des événements. Il a été développé avec Symfony et Twig pour la partie frontend, et utilise MySQL comme base de données.
 
 🚀 Fonctionnalités
