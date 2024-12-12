@@ -2,17 +2,23 @@ Projet de réservation d' Événements :
 
 Ce projet est une application web permettant d'afficher et de s'inscrire à des événements. Il a été développé avec Symfony et Twig pour la partie frontend, et utilise MySQL comme base de données.
 
+---
+
 🚀 Fonctionnalités
 
 Affichage des événements : Consultez la liste des événements disponibles.
 Inscription aux événements : Enregistrez-vous pour participer aux événements qui vous intéressent.
 Gestion des utilisateurs : Possibilité de créer un compte et de gérer ses réservations.  (si implémenté).
 
+---
+
 🛠️ Technologies utilisées
 
 Symfony : Framework PHP utilisé pour la structure du projet.
 Twig : Moteur de templates pour générer les pages HTML.
 MySQL : Base de données pour stocker les informations sur les utilisateurs et les événements.
+
+---
 
 📦 Installation
 
@@ -50,9 +56,13 @@ php bin/console doctrine:migrations:migrate
 symfony server:start
 Le projet sera disponible à l'adresse : http://localhost:8000.
 
+---
+
 🎨 Aperçu : 
 
 ![projet-symfony](https://github.com/user-attachments/assets/b8f281b9-af7b-4fc2-82aa-21a4c8258cc7)
+
+---
 
 🤝 Contribuer : 
 
@@ -64,6 +74,8 @@ Forker le projet :
 - Commitez vos modifications (git commit -am 'Ajoute une nouvelle fonctionnalité').
 - Pushez votre branche (git push origin feature/NouvelleFonctionnalite).
 - Ouvrez une Pull Request.
+
+---
 
 📜 Licence : 
 
